@@ -3,9 +3,24 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
-import matplotlib.pyplot as plt
-from sklearn.model_selection import learning_curve
 
+#import matplotlib.pyplot as plt
+#from sklearn.model_selection import learning_curve
+
+
+#edit standard scaler expected features 
+class MyScaler(StandardScaler):
+    def _validate_data(self, X, y=None, reset=False, **check_params):
+        n_features = X.shape[1]
+        if n_features != self.n_features_in_:
+            self.n_features_in_ = n_features
+            self._reset()
+        X = self._validate_data(X, accept_sparse=("csr", "csc"), **check_params)
+        if reset:
+            self.mean_ = 0.0
+            self.var_ = 1.0
+        return X
+    
 # Load data from CSV
 data = pd.read_csv('"C:/Users/lukas/Desktop/_ProjectCode/DS-LoL-Predicht10min/high_diamond_ranked_10min.csv"')
 
@@ -15,14 +30,15 @@ Y = data['blueWins'].values
 
 # Scale the input variables
 scaler = StandardScaler()
-X = scaler.fit_transform(X)
 
 # Split the data into training and testing sets
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
 
+# Modify the input shape
+input_shape = X_train.shape[1:]
 
 # Define the neural network model
-model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
+model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000, input_shape=input_shape)
 
 # Train the model
 model.fit(X_train, Y_train)
