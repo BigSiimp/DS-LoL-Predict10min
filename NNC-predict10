@@ -39,9 +39,3 @@ prediction = model.predict(new_data)
 
 
 
-if prediction == 1:
-    print("Team Blue wins")
-else:
-    print("Team Red wins")
-
-print("test")
