@@ -26,6 +26,7 @@ model.fit(X_train, Y_train)
 # Evaluate the model on the testing data
 accuracy = model.score(X_test, Y_test)
 print('Accuracy:', accuracy)
+print('test')
 
 # Predict the winner for new data
 new_data = scaler.transform([[1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]])
@@ -35,3 +36,5 @@ if prediction == 1:
     print("Team Blue wins")
 else:
     print("Team Red wins")
+
+print('test2')
