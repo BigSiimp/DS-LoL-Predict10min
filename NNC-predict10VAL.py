@@ -20,8 +20,9 @@ X = pca.fit_transform(X)
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
-# Split the data into training and testing sets
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+# Split the data into training, testing, and validation sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
+X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.33, random_state=0)
 
 # Define the neural network model
 model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
@@ -29,9 +30,9 @@ model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='ad
 # Train the model
 model.fit(X_train, Y_train)
 
-# Evaluate the model on the testing data
-accuracy = model.score(X_test, Y_test)
-print('Accuracy:', accuracy)
+# Evaluate the model on the validation data
+accuracy = model.score(X_val, Y_val)
+print('Validation accuracy:', accuracy)
 
 # Choose a random game ID from the dataset
 random_game_id = random.choice(data['gameId'])
