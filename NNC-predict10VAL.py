@@ -20,9 +20,9 @@ X = pca.fit_transform(X)
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
-# Split the data into training, testing, and validation sets
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
-X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.33, random_state=0)
+# Split the data into training, validation, and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.1, random_state=0)
 
 # Define the neural network model
 model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
@@ -32,10 +32,11 @@ model.fit(X_train, Y_train)
 
 # Evaluate the model on the validation data
 accuracy = model.score(X_val, Y_val)
-print('Validation accuracy:', accuracy)
+print('Validation Accuracy:', accuracy)
 
-# Choose a random game ID from the dataset
-random_game_id = random.choice(data['gameId'])
+# Choose a random game ID from the validation dataset
+val_data = pd.DataFrame(X_val, columns=data.drop(['blueWins', 'gameId'], axis=1).columns)
+random_game_id = val_data.sample(n=1).index[0]
 
 # Retrieve the corresponding row from the dataset
 new_data = data.loc[data['gameId'] == random_game_id].drop(['blueWins', 'gameId'], axis=1).values
