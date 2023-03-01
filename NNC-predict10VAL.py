@@ -26,13 +26,14 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_
 X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.33, random_state=0)
 
 # Classify array 1-dimension only
-y_train = Y_train.ravel().ravel()
-y_val = Y_val.ravel().ravel()
+y_train = Y_train.ravel()
+y_val = Y_val.ravel()
 
 # Reshape the Y arrays to include the number of samples
 Y_train = Y_train.reshape(-1, 1)
 Y_val = Y_val.reshape(-1, 1)
 Y_test = Y_test.reshape(-1, 1)
+
 
 # Shape of Data
 print(data.shape)
@@ -45,10 +46,10 @@ print(Y_val.shape)
 model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
 
 # Train the model
-model.fit(X_train, Y_train)
+model.fit(X_train, y_train.ravel())
 
 # Evaluate the model on the validation data
-accuracy = model.score(X_val, Y_val)
+accuracy = model.score(X_val, y_val.ravel())
 print('Validation accuracy:', accuracy)
 
 # Choose a random game ID from the dataset
