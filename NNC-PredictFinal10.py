@@ -5,9 +5,10 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.decomposition import PCA
 import random
 
-# Load data from CSV and check
+# Load data from CSV and check read
 data = pd.read_csv('high_diamond_ranked_10min.csv')
-data.head()
+# data.head()
+# data.describe()
 
 # Split data into input (X) and output (Y) variables
 X = data.drop(['blueWins', 'gameId'], axis=1).values
@@ -21,7 +22,7 @@ X = pca.fit_transform(X)
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
-# Split the data into training, testing, and validation sets
+# Splitting the data into stes
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.33, random_state=0)
 
@@ -29,13 +30,13 @@ X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.33, 
 y_train = Y_train.ravel()
 y_val = Y_val.ravel()
 
-# Reshape the Y arrays to include the number of samples
+# Reshape the Y arrays 
 Y_train = Y_train.reshape(-1, 1)
 Y_val = Y_val.reshape(-1, 1)
 Y_test = Y_test.reshape(-1, 1)
 
 
-# Shape of Data
+# Shape of the used data
 print(data.shape)
 print(X_train.shape)
 print(X_val.shape)
@@ -62,10 +63,10 @@ new_data = data.loc[data['gameId'] == random_game_id].drop(['blueWins', 'gameId'
 new_data = pca.transform(new_data)
 new_data = scaler.transform(new_data)
 
-# Predict the winner for the new data
+# Predict the winner for the new data using the trained NN
 prediction = model.predict(new_data)
 
-# Print the prediction and the game ID
+# Print the prediction and the game ID of a random game
 if prediction == 1:
     print("Team Blue wins")
 else:
