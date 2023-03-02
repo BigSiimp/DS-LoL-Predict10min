@@ -7,15 +7,14 @@ import random
 
 # Load data from CSV and check read
 data = pd.read_csv('high_diamond_ranked_10min.csv')
-# data.head()
-# data.describe()
+
 
 # Split data into input (X) and output (Y) variables
 X = data.drop(['blueWins', 'gameId'], axis=1).values
 Y = data['blueWins'].values
 
-# Apply PCA to reduce the number of features to 30
-pca = PCA(n_components=30)
+# Apply PCA to reduce the number of features
+pca = PCA(n_components=38)
 X = pca.fit_transform(X)
 
 # Scale the input variables
@@ -23,8 +22,8 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 # Splitting the data into stes
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
-X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.33, random_state=0)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=41)
+X_test, X_val, Y_test, Y_val = train_test_split(X_test, Y_test, test_size=0.66, random_state=41)
 
 # Classify array 1-dimension only
 y_train = Y_train.ravel()
@@ -40,16 +39,17 @@ Y_test = Y_test.reshape(-1, 1)
 print(data.shape)
 print(X_train.shape)
 print(X_val.shape)
-print(Y_train.shape)
-print(Y_val.shape)
+print(X_test.shape)
 
 # Define the neural network model
-model = MLPClassifier(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
+model = MLPClassifier(hidden_layer_sizes=(64,32, 8), activation='relu', solver='adam', max_iter=450)
 
 # Train the model
 model.fit(X_train, y_train.ravel())
 
-# Evaluate the model on the validation data
+# Evaluate the model 
+accuracy = model.score(X_test, Y_test)
+print('Accuracy:', accuracy)
 accuracy = model.score(X_val, y_val.ravel())
 print('Validation accuracy:', accuracy)
 
