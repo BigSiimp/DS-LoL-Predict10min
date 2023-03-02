@@ -40,10 +40,13 @@ Y_val = Y_val.reshape(-1, 1)
 Y_test = Y_test.reshape(-1, 1)
 
 # Shape of the used data
+print(data.describe())
+
 print(data.shape)
 print(X_train.shape)
 print(X_val.shape)
 print(X_test.shape)
+
 
 # Correlation Matrix WIP
 #sns.set(rc={'figure.figsize':(15,15)})
